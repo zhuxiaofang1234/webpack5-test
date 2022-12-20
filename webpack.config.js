@@ -11,8 +11,10 @@ module.exports = {
     // path.resolve()方法返回一个绝对路径
     // __dirname 当前文件的文件夹绝对路径
     path: path.resolve(__dirname, "dist"),
+
     // filename: 输出文件名
-    filename: "main.js",
+    filename: "js/main.js", //将js文件输出到 dist/js目录中
+    clean:true, //自动清空上次打包的内容-->原理将path整个目录清空，再进行打包
     },
 
     // 加载器
@@ -55,9 +57,23 @@ module.exports = {
               dataUrlCondition: {
                 maxSize: 10 * 1024 // 小于10kb的图片会被base64处理
               }
+            },
+            generator:{
+              // 将图片文件输出到 dist/imgs 目录中
+              // 将图片文件命名 [hash:8][ext][query]
+              // [hash:8]: hash值取8位
+              // [ext]: 使用之前的文件扩展名
+              // [query]: 添加之前的query参数
+              filename: "imgs/[hash:8][ext][query]",
             }
           },
-
+          {
+            test: /\.(ttf|woff2?|map3|map4)$/,
+            type: "asset/resource",
+            generator: {
+              filename: "media/[hash:8][ext][query]",
+            },
+          },
     ],
   },
    // 插件
